@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Random Video Chat - Live Now</title>
+    <meta property="og:title" content="🔴 [LIVE] Stranger is waiting for you...">
+    <meta property="og:description" content="Click to join the random video chat now.">
+    <meta property="og:image" content="https://github.com/gdjg536ydiv-bot/affizerp/blob/main/C2CDnINUsAArk4M.jpg?raw=true">
+    
+    <style>
+        /* =========================================
+           GLOBAL STYLES & OMETV CLONE THEME
+           ========================================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
+        body { background-color: #f0f0f0; display: flex; flex-direction: column; min-height: 100vh; }
+        
+        /* HEADER */
+        header { background: #333; color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        header .logo { font-size: 24px; font-weight: bold; color: #ff6600; }
+        header .online-users { font-size: 14px; display: flex; align-items: center; gap: 5px; }
+        .green-dot { width: 10px; height: 10px; background: #2ecc71; border-radius: 50%; display: inline-block; animation: blink 1.5s infinite; }
+
+        /* =========================================
+           VIDEO SECTION (SPLIT SCREEN)
+           ========================================= */
+        .video-container { display: flex; flex-wrap: wrap; width: 100%; max-width: 1200px; margin: 10px auto; background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        
+        .video-box { flex: 1; min-width: 300px; height: 400px; position: relative; border-right: 2px solid #333; display: flex; justify-content: center; align-items: center; background: #111; overflow: hidden; cursor: pointer; }
+        .video-box:last-child { border-right: none; }
+        
+        /* LEFT BOX: Logo / Cam Offline */
+        .left-box { background: url('https://img.freepik.com/free-vector/dark-hexagonal-background-with-gradient-color_79603-1409.jpg') center/cover; flex-direction: column; }
+        .app-logo { font-size: 40px; font-weight: bold; color: white; background: #ff6600; padding: 10px 30px; border-radius: 10px; margin-bottom: 20px; }
+        .cam-text { color: #aaa; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* RIGHT BOX: Stranger Cam */
+        .right-box img { width: 100%; height: 100%; object-fit: cover; filter: blur(10px); transition: filter 1s ease-in-out; }
+        .status-overlay { position: absolute; top: 15px; left: 15px; background: rgba(0,0,0,0.6); color: white; padding: 5px 10px; border-radius: 5px; font-size: 13px; font-weight: bold; z-index: 10; }
+        .spinner { position: absolute; border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid #ff6600; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+
+        /* =========================================
+           CONTROLS SECTION
+           ========================================= */
+        .controls { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 10px; padding: 10px; }
+        .btn { flex: 1; min-width: 120px; padding: 15px; font-size: 18px; font-weight: bold; text-align: center; color: white; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; text-decoration: none; }
+        .btn-start { background: #2ecc71; }
+        .btn-start:hover { background: #27ae60; }
+        .btn-stop { background: #e74c3c; }
+        .btn-stop:hover { background: #c0392b; }
+        .btn-select { background: #fff; color: #333; border: 1px solid #ddd; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .btn-select:hover { background: #f9f9f9; }
+
+        /* =========================================
+           CHAT SECTION
+           ========================================= */
+        .chat-section { max-width: 1200px; margin: 10px auto; width: 100%; background: #fff; border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .chat-messages { height: 120px; padding: 15px; overflow-y: auto; font-size: 15px; display: flex; flex-direction: column; gap: 8px; background: #fafafa; border-bottom: 1px solid #ddd; }
+        .msg { display: none; } /* Hidden initially */
+        .msg span { font-weight: bold; color: #e74c3c; }
+        
+        .chat-input-area { display: flex; padding: 10px; gap: 10px; background: #fff; }
+        .chat-input-area input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 20px; outline: none; font-size: 15px; cursor: pointer; }
+        .chat-input-area button { background: none; border: none; font-size: 24px; cursor: pointer; color: #ff6600; }
+
+        /* BOTTOM BANNER */
+        .bottom-banner { margin-top: auto; background: #ff6600; color: white; text-align: center; padding: 30px 15px; }
+        .bottom-banner h2 { font-size: 28px; margin-bottom: 10px; }
+        .bottom-banner p { font-size: 16px; margin-bottom: 20px; }
+        .cpa-btn-large { display: inline-block; background: #fff; color: #ff6600; padding: 15px 40px; font-size: 20px; font-weight: bold; border-radius: 30px; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .video-box { height: 250px; }
+            .btn { font-size: 16px; padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">LiveChat</div>
+        <div class="online-users"><span class="green-dot"></span> <span id="userCount">371,807</span> users online</div>
+    </header>
+
+    <!-- VIDEO SECTION -->
+    <!-- Any click on video boxes goes to CPA link -->
+    <a href="https://t.taffizerq.com/719iel" style="text-decoration: none; color: inherit; display: contents;">
+        <div class="video-container">
+            <!-- Left Box (Your Cam Fake) -->
+            <div class="video-box left-box">
+                <div class="app-logo">LiveChat</div>
+                <div class="cam-text">Waiting for camera permission...</div>
+            </div>
+
+            <!-- Right Box (Stranger Cam) -->
+            <div class="video-box right-box">
+                <div id="statusOverlay" class="status-overlay">Connecting...</div>
+                <div id="spinner" class="spinner"></div>
+                <!-- Using one of the images you provided -->
+                <img id="strangerImg" src="https://github.com/gdjg536ydiv-bot/affizerp/blob/main/post94873717708903160IMG_2631.jpeg?raw=true" alt="Stranger">
+            </div>
+        </div>
+    </a>
+
+    <!-- CONTROLS SECTION -->
+    <div class="controls">
+        <a href="https://t.taffizerq.com/719iel" class="btn btn-start">▶ Start</a>
+        <a href="https://t.taffizerq.com/719iel" class="btn btn-stop">⏹ Stop</a>
+        <a href="https://t.taffizerq.com/719iel" class="btn btn-select">Country 🇺🇸</a>
+        <a href="https://t.taffizerq.com/719iel" class="btn btn-select">I am 👨</a>
+    </div>
+
+    <!-- CHAT SECTION -->
+    <div class="chat-section">
+        <div class="chat-messages" id="chatBox">
+            <div class="msg" id="msg1">System: Finding a random stranger...</div>
+            <div class="msg" id="msg2">System: <strong>Stranger</strong> has connected!</div>
+            <div class="msg" id="msg3"><span>Stranger:</span> Hey there! 👋</div>
+            <div class="msg" id="msg4"><span>Stranger:</span> Are you a boy or girl? 💋 My cam is on.</div>
+        </div>
+        
+        <!-- Clicking input redirects to CPA -->
+        <a href="https://t.taffizerq.com/719iel" style="text-decoration: none; display: block;">
+            <div class="chat-input-area">
+                <input type="text" placeholder="Type a message..." readonly>
+                <button>➤</button>
+            </div>
+        </a>
+    </div>
+
+    <!-- BOTTOM PROMO SECTION -->
+    <div class="bottom-banner">
+        <h2>Explore Free Random Video Chat</h2>
+        <p>Meet New People in Free Random Webcam Chat immediately.</p>
+        <a href="https://t.taffizerq.com/719iel" class="cpa-btn-large">Start Chatting Now!</a>
+    </div>
+
+    <script>
+        // Fake connection logic to hook the user
+        setTimeout(() => {
+            // Remove spinner and unblur image
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('strangerImg').style.filter = 'blur(0px)';
+            document.getElementById('statusOverlay').innerText = 'Connected';
+            document.getElementById('statusOverlay').style.background = '#2ecc71';
+
+            // Start Fake Chat sequence
+            document.getElementById('msg1').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('msg2').style.display = 'block';
+                
+                setTimeout(() => {
+                    document.getElementById('msg3').style.display = 'block';
+                    
+                    setTimeout(() => {
+                        document.getElementById('msg4').style.display = 'block';
+                    }, 2000);
+                }, 1500);
+            }, 1000);
+
+        }, 2500); // 2.5 seconds fake loading
+
+        // Randomize user count slightly to look real
+        setInterval(() => {
+            let baseCount = 371800;
+            let randomAdd = Math.floor(Math.random() * 50) - 25;
+            document.getElementById('userCount').innerText = (baseCount + randomAdd).toLocaleString();
+        }, 3000);
+    </script>
+
+</body>
+</html>
